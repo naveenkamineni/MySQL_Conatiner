@@ -1,0 +1,98 @@
+#pull mysql:latest image from Dockerhub
+docker image pull mysql:latest
+
+Step 1: Run MySQL Container
+Ensure your MySQL container is running:
+docker run -itd --name mysql-con1 -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=rootpassword mysql:latest
+
+docker run -itd --name mysql-con1 -p 3307:3306 \
+-e MYSQL_ROOT_PASSWORD=rootpassword \
+-e MYSQL_USER=nave \
+-e MYSQL_PASSWORD=pass \
+mysql:latest
+
+sudo netstat -tulnp | grep 3306
+
+
+Step 2: Run phpMyAdmin
+Now, start a phpMyAdmin container and link it to MySQL
+
+# pull php image from Dockerhub
+docker run -itd --name phpmyadmin -p 8080:80 \
+--link mysql-con1:db \
+-e PMA_HOST=mysql-con1 \
+phpmyadmin/phpmyadmin
+
+docker run -itd --name phpmyadmin --network mynetwork -p 8080:80 \
+-e PMA_HOST=mysql-con1 \
+phpmyadmin/phpmyadmin
+
+
+Step 3:check the php on web
+http://<EC2-Public-IP>:8080
+ 
+root: root
+password: your-password
+
+# connect to database from cli
+
+docker exec -it mysql-con1 mysql -u root   or docker exec -it flask-auth-app_mysql_1 bash
+mysql -u root -p
+
+✅ Solution 2: Grant Privileges to 'nave'
+If you need nave to create a database, log in as root and run:
+
+sql
+Copy
+Edit
+GRANT ALL PRIVILEGES ON *.* TO 'nave'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'nave'@'%';
+
+
+commands:
+SHOW DATABASES;
+USE mydatabase;
+SHOW TABLES;
+SELECT * FROM users;
+
+# create table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+# add values to tables
+INSERT INTO users (name, email) VALUES 
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com');
+
+# see values in tables
+select * from users;
+
+
+
+
+flask-auth-app/
+│── app.py                 # Main Flask application
+│── Dockerfile             # Docker configuration
+│── docker-compose.yml     # Docker Compose configuration
+│── requirements.txt       # Python dependencies
+│── .env                   # Environment variables (for database credentials)
+│
+├── static/                # Static files (CSS, images, etc.)
+│   ├── style.css          # CSS for styling the app
+│
+├── templates/             # HTML templates
+│   ├── register.html      # Registration page
+│   ├── login.html         # Login page
+│   ├── home.html          # Home/Dashboard after login
+│
+├── migrations/            # (If using Flask-Migrate for DB migrations)
+│
+└── config.py              # Configuration file (optional)
+
