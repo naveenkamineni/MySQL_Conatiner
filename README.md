@@ -20,37 +20,40 @@ Enter password : root
 mysql> show databases;
 
 +--------------------+
-
 | Database           |
-
 +--------------------+
-
 | information_schema |
-
 | mysql              |
-
 | performance_schema |
-
 | sys                |
-
 +--------------------+
 
 # Now you are mysql cli, you can use mysql now
 
 mysql> CREATE DATABASE mydatabase;
+
 Query OK, 1 row affected (0.00 sec)
 
 mysql> USE mydatabase;
+
 Database changed
+
 mysql> CREATE TABLE users (
+
     ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    
     ->     name VARCHAR(100) NOT NULL,
+    
     ->     email VARCHAR(100) UNIQUE NOT NULL,
+    
     ->     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
     -> );
+    
 Query OK, 0 rows affected (0.02 sec)
 
 mysql> show tables;
+
 +----------------------+
 | Tables_in_mydatabase |
 +----------------------+
@@ -59,14 +62,17 @@ mysql> show tables;
 1 row in set (0.00 sec)
 
 mysql> INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
+
 Query OK, 1 row affected (0.01 sec)
 
 mysql> select * from users;
+
 +----+----------+------------------+---------------------+
 | id | name     | email            | created_at          |
 +----+----------+------------------+---------------------+
 |  1 | John Doe | john@example.com | 2025-03-29 09:35:09 |
 +----+----------+------------------+---------------------+
+
 1 row in set (0.00 sec)
 
 # MySQL_Conatiner
