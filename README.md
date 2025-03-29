@@ -1,49 +1,90 @@
-# MySQL using Docker Container
-###### Pull mysql image from DockerHub ##########
+# MySQL in Docker Container
 
+This guide explains how to set up and run MySQL inside a Docker container, allowing you to manage databases efficiently in an isolated environment.
+
+## 🚀 Pull MySQL Image from Docker Hub
+To get started, pull the latest MySQL image from Docker Hub:
+```bash
 docker pull mysql:latest
+```
 
-# Run mysql Container from mysql image
+## 🐳 Run MySQL Container
+Create and start a MySQL container using the pulled image:
+```bash
+docker run -itd --name mysql-con1 -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=rootpassword mysql:latest
+```
+This command:
+- Runs MySQL in detached mode (`-itd`).
+- Names the container `mysql-con1`.
+- Maps port `3306` of the container to `3306` on the host.
+- Sets the root password for MySQL.
 
-docker run -itd --name mysql-con1 -p 3306:3306 \ -e MYSQL_ROOT_PASSWORD=rootpassword mysql:latest
-
-# To use mysql inside Container
-
+## 🔗 Access MySQL Inside the Container
+To interact with MySQL inside the running container, use:
+```bash
 docker exec -it mysql-con1 mysql -u root -p
+```
+You will be prompted for the password. Enter:
+```
+rootpassword
+```
+Once logged in, you can start using MySQL.
 
-##### You see : #######
+## 📂 Database Operations
+### Create a New Database
+```sql
+CREATE DATABASE mydatabase;
+```
 
-Enter password : root
+### Select the Database
+```sql
+USE mydatabase;
+```
 
-##### You are inside container : #####
+### Create a Table
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-mysql> show databases;
+### View Tables in the Database
+```sql
+SHOW TABLES;
+```
 
-# Now you are mysql cli, you can use mysql now
+### Insert Data into the Table
+```sql
+INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
+```
 
-mysql> CREATE DATABASE mydatabase;
+### Retrieve Data
+```sql
+SELECT * FROM users;
+```
 
-mysql> USE mydatabase;
+## 🖥️ Using MySQL with a PHP Server (Optional)
+If you want to connect MySQL with a PHP server, follow these steps:
+1. Ensure you have a PHP environment (e.g., Apache, Nginx, or PHP CLI).
+2. Use `mysqli` or `PDO` in PHP to connect to MySQL.
+3. Set up a `config.php` file with database credentials.
 
-mysql> CREATE TABLE users (
+## 🛑 Stop and Remove MySQL Container
+To stop the MySQL container:
+```bash
+docker stop mysql-con1
+```
+To remove the container:
+```bash
+docker rm mysql-con1
+```
 
-    ->     id INT AUTO_INCREMENT PRIMARY KEY,
-    
-    ->     name VARCHAR(100) NOT NULL,
-    
-    ->     email VARCHAR(100) UNIQUE NOT NULL,
-    
-    ->     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    
-    -> );
-    
+## 📝 Conclusion
+This guide helps you set up and manage MySQL using Docker efficiently. You can use this setup for development, testing, or connecting with PHP applications.
 
-mysql> show tables;
+📌 **Happy Coding!** 🚀
 
-mysql> INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
-
-mysql> select * from users;
-
-
-# MySQL_Conatiner
-Using MySQL Desktop on Docker Conatiner with help of PHP server
