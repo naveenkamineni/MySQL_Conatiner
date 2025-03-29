@@ -11,13 +11,16 @@ docker pull mysql:latest
 ## 🐳 Run MySQL Container
 Create and start a MySQL container using the pulled image:
 ```bash
-docker run -itd --name mysql-con1 -p 3306:3306 \
--e MYSQL_ROOT_PASSWORD=rootpassword mysql:latest
+docker run -itd --name mysql-con1 -p 3307:3306 \
+-e MYSQL_ROOT_PASSWORD=rootpassword \
+-e MYSQL_USER=nave \
+-e MYSQL_PASSWORD=pass \
+mysql:latest
 ```
 This command:
 - Runs MySQL in detached mode (`-itd`).
 - Names the container `mysql-con1`.
-- Maps port `3306` of the container to `3306` on the host.
+- Maps port `3307` of the container to `3306` on the host.
 - Sets the root password for MySQL.
 
 ## 🔗 Access MySQL Inside the Container
